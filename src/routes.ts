@@ -15,14 +15,18 @@ router.use(oAuth);
 
 router.post('/create-session', (req, res) => {
 	const {uuid} = createUUID();
-	const content = {
-		sessionType: Number(req.body.typeSession),
+	const content: any = {
+		saveMsg: req.body.save,
 		uuid: uuid,
 		originUrl: req.body.originUrl,
 		created_at: Date.now(),
 	};
 
-	const token = generateSessionKey(content, req.body.privateKey, content.sessionType);
+	const token = generateSessionKey(
+		content,
+		req.body.privateKey,
+		Number(req.body.duration)
+	);
 
 	res.json({
 		token: token,
