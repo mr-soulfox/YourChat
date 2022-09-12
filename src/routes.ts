@@ -1,22 +1,20 @@
 import {Router} from 'express';
 import {generateSessionKey} from './jwt';
-import {createChat} from './routes/createChat';
+import {createUUID} from './routes/createUUID';
 import {typeSession} from './routes/middlewares/typeSession';
 
 export const router = Router();
-
 router.use(typeSession);
 
 router.get('/', (req, res) => {
 	res.send('Welcome to Your Chat API.');
 });
 
-router.post('/create-chat', (req, res) => {
-	const {uuid, path} = createChat();
+router.post('/create-session', (req, res) => {
+	const {uuid} = createUUID();
 	const content = {
-		sessionType: Number(req.headers.typeSession),
+		sessionType: Number(req.body.typeSession),
 		uuid: uuid,
-		path: path,
 		originUrl: req.body.originUrl,
 		created_at: Date.now(),
 	};
@@ -25,6 +23,5 @@ router.post('/create-chat', (req, res) => {
 
 	res.json({
 		token: token,
-		path: path,
 	});
 });

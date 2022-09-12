@@ -6,13 +6,17 @@
     "dev": "yarn ts-node-dev ./src/index.ts"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.1",
+    "helmet": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
     "uuid": "^9.0.0",
     "ws": "^8.8.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/helmet": "^4.0.0",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^18.7.16",
     "@types/uuid": "^8.3.4",

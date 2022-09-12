@@ -14,4 +14,4 @@ node_modules
 *.txt
 
 
-web
+test.ts

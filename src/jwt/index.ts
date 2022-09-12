@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 interface Content {
 	sessionType: number;
 	uuid: string;
-	path: string;
 	originUrl: string;
 	created_at: number;
 }
