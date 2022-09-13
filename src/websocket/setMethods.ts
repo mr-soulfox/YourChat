@@ -1,28 +1,43 @@
 import {WebSocketServer} from 'ws';
-import {oAuth, oAuthConnection} from './functions/oAuthConnection';
+import {oAuthConnection} from './functions/oAuthConnection';
+import {roomsObj} from './rooms';
 
 interface ConnectionDetails {
 	type: string;
-	body: Object | oAuth | any;
+	token: string;
+	path: string;
+	body: Object | any;
 }
 
 export function setMethods(socket: WebSocketServer) {
-	socket.on('connection', (ws) => {
-		ws.on('message', (body, isBinary) => {
-			const connectionDetails: ConnectionDetails = JSON.parse(body.toString());
+	socket.on('connection', (ws, req) => {
+		console.log(req.url);
 
-			if (connectionDetails.type === 'connect') {
-				const body: oAuth = connectionDetails.body;
-				oAuthConnection(body, ws);
-				//...
+		roomsObj.roomsMethods.forEach((room, i) => {
+			if (room.name === req.url?.split('/')[1]) {
+				roomsObj.roomsMethods[i].clients.push(ws);
 			}
+		});
+
+		ws.on('message', (body) => {
+			const connectionDetails: ConnectionDetails = JSON.parse(body.toString());
+			const oAuth = connectionDetails.token;
+			oAuthConnection(oAuth, ws);
 
 			if (connectionDetails.type === 'text') {
-				[...socket.clients]
-					.filter((c) => c !== ws)
-					.forEach((c) => {
-						c.send(connectionDetails.body);
-					});
+				roomsObj.roomsMethods.forEach((room, i) => {
+					if (room.name === connectionDetails.path) {
+						roomsObj.roomsMethods[i].clients.forEach((c) => {
+							if (c != ws) {
+								c.send(
+									JSON.stringify({
+										text: connectionDetails.body,
+									})
+								);
+							}
+						});
+					}
+				});
 			}
 		});
 

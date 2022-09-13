@@ -3,6 +3,7 @@ import {generateSessionKey} from './jwt';
 import {createUUID} from './routes/createUUID';
 import {oAuth} from './routes/middlewares/oAuth';
 import {typeSession} from './routes/middlewares/typeSession';
+import {roomsObj} from './websocket/rooms';
 
 export const router = Router();
 
@@ -30,5 +31,18 @@ router.post('/create-session', (req, res) => {
 
 	res.json({
 		token: token,
+	});
+});
+
+router.post('/create-room', (req, res) => {
+	const {uuid} = createUUID();
+
+	roomsObj.roomsMethods.push({
+		name: uuid,
+		clients: [],
+	});
+
+	res.json({
+		roomId: uuid,
 	});
 });

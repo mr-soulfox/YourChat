@@ -1,13 +1,9 @@
 import jwt from 'jsonwebtoken';
 import {WebSocket} from 'ws';
 
-export interface oAuth {
-	token: string;
-}
-
-export function oAuthConnection(data: oAuth, ws: WebSocket) {
-	const decode: any = jwt.decode(data.token);
-	const valid = Date.now() <= decode.exp * 1000;
+export function oAuthConnection(token: string, ws: WebSocket) {
+	const decode: any = jwt.decode(token);
+	const valid = Date.now() >= decode.exp * 1000;
 
 	if (!valid) {
 		ws.close(
@@ -18,11 +14,4 @@ export function oAuthConnection(data: oAuth, ws: WebSocket) {
 			})
 		);
 	}
-
-	ws.send(
-		JSON.stringify({
-			expired: !valid,
-			msg: 'oAuth: Your token is correct',
-		})
-	);
 }

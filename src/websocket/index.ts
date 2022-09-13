@@ -8,6 +8,7 @@ export class WebSocket {
 	constructor(serverOpt: Server) {
 		this.socket = new WebSocketServer({
 			server: serverOpt,
+			clientTracking: true,
 		});
 
 		console.log(`Web Socket Server is running on ${process.env.PORT || 3000}`);
