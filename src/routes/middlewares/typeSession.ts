@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
 
 export function typeSession(req: Request, res: Response, next: NextFunction) {
-	if (req.method != 'POST') {
+	if (req.path != '/create-session') {
 		next();
 	}
 
@@ -14,6 +14,4 @@ export function typeSession(req: Request, res: Response, next: NextFunction) {
 
 		next();
 	}
-
-	res.status(401).json({Error: "Don't create, bad request"});
 }
