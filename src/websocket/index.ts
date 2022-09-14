@@ -3,7 +3,7 @@ import {Server as WebSocketServer} from 'ws';
 import {setMethods} from './setMethods';
 
 export class WebSocket {
-	socket: WebSocketServer;
+	private readonly socket: WebSocketServer;
 
 	constructor(serverOpt: Server) {
 		this.socket = new WebSocketServer({

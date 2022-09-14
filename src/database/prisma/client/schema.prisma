@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Permission {
+  id        Int    @id @default(autoincrement())
+  apiKey    String
+  originUrl String
+}
+
+model Room {
+  id         Int      @id @default(autoincrement())
+  roomId     String   @unique
+  save       Boolean
+  created_at DateTime @default(now())
+  msg        Message?
+}
+
+model Message {
+  id     Int     @id @default(autoincrement())
+  userId String  @unique
+  msg    String?
+  room   Room    @relation(fields: [roomId], references: [roomId])
+  roomId String  @unique
+}

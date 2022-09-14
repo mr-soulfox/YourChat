@@ -1,6 +1,9 @@
 import {WebSocketServer} from 'ws';
 import {oAuthConnection} from './functions/oAuthConnection';
-import {roomsObj} from './rooms';
+import {saveMsg} from './functions/saveMsg';
+import {roomsObj} from './cache/rooms';
+import {msgObj} from './cache/msg';
+import {organizeMsg} from './functions/organizeMsg';
 
 interface ConnectionDetails {
 	type: string;
@@ -18,6 +21,13 @@ export function setMethods(socket: WebSocketServer) {
 				roomsObj.roomsMethods[i].clients.push(ws);
 			}
 		});
+
+		saveMsg(
+			msgObj,
+			'create',
+			String(req.url?.split('/')[2]),
+			String(req.url?.split('/')[1])
+		);
 
 		ws.on('message', (body) => {
 			const connectionDetails: ConnectionDetails = JSON.parse(body.toString());
@@ -39,9 +49,32 @@ export function setMethods(socket: WebSocketServer) {
 					}
 				});
 			}
+
+			msgObj.msgCache.forEach((msg, ui) => {
+				if (msg.name === connectionDetails.path) {
+					msgObj.msgCache[ui].msg.forEach((user, li) => {
+						if (user.user.jwtId === oAuth) {
+							msgObj.msgCache[ui].msg[li].user.allMsg = organizeMsg(
+								String(connectionDetails.body),
+								user.user.allMsg
+							);
+
+							return;
+						}
+
+						msgObj.msgCache[ui].msg[li].user.jwtId = oAuth;
+						msgObj.msgCache[ui].msg[li].user.allMsg = organizeMsg(
+							String(connectionDetails.body),
+							user.user.allMsg
+						);
+					});
+				}
+			});
 		});
 
 		ws.on('close', (code, reason) => {
+			saveMsg(msgObj, 'update');
+
 			try {
 				ws.emit(
 					'close',
