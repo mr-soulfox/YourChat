@@ -3,16 +3,16 @@ import {SqlClient} from '../../../database/client';
 
 export async function initializeMsgInDatabase() {
 	const sqlClient = new SqlClient();
-	const msg = await sqlClient.message('', '', '', 'all');
+	const msg = await sqlClient.message('', '', '', 'alreadyAll');
 	await sqlClient.disconnect();
 
-	msg.info.database.forEach((msg, i) => {
+	msg.info.database.forEach((msg: any, i: any) => {
 		msgObj.msgCache.push({
 			name: String(msg.roomId),
 			msg: [
 				{
 					user: {
-						jwtId: String(msg.userId),
+						uuid: String(msg.userId),
 						allMsg: String(msg.msg),
 					},
 				},

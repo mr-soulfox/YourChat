@@ -6,6 +6,7 @@ import {roomsObj} from './websocket/cache/rooms';
 import {SqlClient} from './database/client';
 import {createApiKey} from './routes/createApiKey';
 import randomstring from 'randomstring';
+import {decryptMessages} from './routes/returnSavedMsg';
 
 export const router = Router();
 
@@ -49,10 +50,13 @@ router.delete('/adm/:apiKey/delete', async (req, res) => {
 
 router.get('/msg/saved/:roomId', async (req, res) => {
 	const sqlClient = new SqlClient();
-	const result = await sqlClient.message('', '', String(req.params.roomId), 'find');
+	const result = await sqlClient.message('', '', String(req.params.roomId), 'all');
 	await sqlClient.disconnect();
+	//const msg = decryptMessages(result.info.database.msg);
 
-	res.status(result.status).json(result);
+	res.status(result.status).json({
+		result: result,
+	});
 });
 
 router.post('/create-session', (req, res) => {
@@ -92,4 +96,16 @@ router.post('/create-room', async (req, res) => {
 	});
 
 	res.status(result.status).json(result);
+});
+
+router.delete('/rooms/:roomId/delete', async (req, res) => {
+	const sqlClient = new SqlClient();
+	const resultRooms = await sqlClient.rooms(req.params.roomId, 'delete');
+	const resultMessages = await sqlClient.message('', '', req.params.roomId, 'delete');
+	await sqlClient.disconnect();
+
+	res.json({
+		roomsDB: resultRooms,
+		messagesDB: resultMessages,
+	});
 });

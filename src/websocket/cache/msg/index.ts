@@ -1,6 +1,6 @@
 export interface Msg {
 	user: {
-		jwtId: string;
+		uuid: string;
 		allMsg: string;
 	};
 }

@@ -6,7 +6,7 @@ export async function oAuth(req: Request, res: Response, next: NextFunction) {
 	const allKeys = await sqlClient.permission('', '', 'all');
 	await sqlClient.disconnect();
 
-	const sameKey = allKeys.info.database.filter((obj) => {
+	const sameKey = allKeys.info.database.filter((obj: any) => {
 		return String(obj.apiKey) === req.headers.authorization;
 	});
 

@@ -15,11 +15,13 @@ export async function permissionDBInteraction(
 		});
 
 		try {
-			await client.permission.delete({
+			const result = await client.permission.delete({
 				where: {
 					id: Number(permission?.id),
 				},
 			});
+
+			return {complete: true, info: result};
 		} catch (err) {
 			return {
 				complete: false,

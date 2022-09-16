@@ -2,7 +2,7 @@ interface Log {
 	status: number;
 	info: {
 		msg: string;
-		database: Array<any>;
+		database: any;
 	};
 	error?: string;
 }

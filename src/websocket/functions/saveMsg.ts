@@ -11,22 +11,18 @@ export async function saveMsg(
 	const sqlClient = new SqlClient();
 
 	if (type == 'create') {
-		const result = await sqlClient.message('', userId, roomId, 'update');
+		await sqlClient.message('', userId, roomId, 'create');
 		await sqlClient.disconnect();
-		console.log(result);
 
 		return;
 	}
 
-	msg.msgCache.forEach((msg: any) => {
-		roomId = msg.name;
+	msg.msgCache.forEach((room: any, i) => {
+		const roomId = room.name;
+		console.log(msg.msgCache[i].msg);
 
-		msg.msg.user.forEach(async (user: Msg) => {
-			userId = user.user.jwtId;
-			msg = user.user.allMsg;
-			const result = await sqlClient.message(msg, userId, roomId, 'update');
-
-			console.log(result);
+		msg.msgCache[i].msg.forEach(async (user: Msg) => {
+			await sqlClient.message(user.user.allMsg, user.user.uuid, roomId, 'update');
 		});
 	});
 

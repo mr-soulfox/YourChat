@@ -8,12 +8,20 @@ export async function roomDBInteraction(
 	type: string
 ): Promise<Return> {
 	if (type === 'delete') {
+		const roomDetails = await client.room.findFirst({
+			where: {
+				roomId: params.roomId,
+			},
+		});
+
 		try {
-			await client.room.delete({
+			const result = await client.room.delete({
 				where: {
-					roomId: params.roomId,
+					id: roomDetails?.id,
 				},
 			});
+
+			return {complete: true, info: result};
 		} catch (err) {
 			return {complete: false, info: err, error: true};
 		}
@@ -26,21 +34,14 @@ export async function roomDBInteraction(
 	}
 
 	if (type === 'all') {
-		const rooms = await client.room.findMany({
-			include: {
-				msg: true,
-			},
-		});
+		const rooms = await client.room.findMany({});
 
 		return {complete: true, info: rooms};
 	}
 
-	const room = await client.room.findUnique({
+	const room = await client.room.findFirst({
 		where: {
 			roomId: params.roomId,
-		},
-		include: {
-			msg: true,
 		},
 	});
 

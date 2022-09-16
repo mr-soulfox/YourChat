@@ -1,4 +1,5 @@
 import express from 'express';
+import {PrismaClient} from './database/prisma/client';
 import {router} from './routes';
 import {WebSocket} from './websocket';
 import cors from 'cors';
@@ -19,4 +20,6 @@ const serverHttp = app.listen(port, () => {
 	initializeMsgInDatabase();
 	console.log('Server is running on PORT', port);
 });
+
+export const prismaClient = new PrismaClient();
 new WebSocket(serverHttp);

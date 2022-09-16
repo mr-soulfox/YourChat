@@ -6,7 +6,7 @@ export async function initializeRoomsInDatabase() {
 	const rooms = await sqlClient.rooms('', 'all');
 	await sqlClient.disconnect();
 
-	rooms.info.database.forEach((room, i) => {
+	rooms.info.database.forEach((room: any, i: any) => {
 		roomsObj.roomsMethods.push({
 			name: String(room.roomId),
 			clients: [],

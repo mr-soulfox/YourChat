@@ -1,4 +1,5 @@
-import {PrismaClient} from '../prisma/client';
+import {prismaClient} from '../../index';
+import {prisma, PrismaClient} from '../prisma/client';
 import {log} from './function/log';
 import {messageDBInteraction} from './message';
 import {permissionDBInteraction} from './permission';
@@ -8,7 +9,7 @@ export class SqlClient {
 	private readonly client: PrismaClient;
 
 	constructor() {
-		this.client = new PrismaClient();
+		this.client = prismaClient;
 	}
 
 	async disconnect() {
