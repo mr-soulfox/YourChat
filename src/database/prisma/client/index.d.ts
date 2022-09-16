@@ -1944,11 +1944,6 @@ export namespace Prisma {
     roomId?: boolean
     save?: boolean
     created_at?: boolean
-    msg?: boolean | MessageArgs
-  }
-
-  export type RoomInclude = {
-    msg?: boolean | MessageArgs
   }
 
   export type RoomGetPayload<
@@ -1960,14 +1955,11 @@ export namespace Prisma {
     ? never
     : S extends RoomArgs | RoomFindManyArgs
     ?'include' extends U
-    ? Room  & {
-    [P in TrueKeys<S['include']>]:
-        P extends 'msg' ? MessageGetPayload<Exclude<S['include'], undefined | null>[P]> | null :  never
-  } 
+    ? Room 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-        P extends 'msg' ? MessageGetPayload<Exclude<S['select'], undefined | null>[P]> | null :  P extends keyof Room ? Room[P] : never
+    P extends keyof Room ? Room[P] : never
   } 
     : Room
   : Room
@@ -2342,7 +2334,6 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    msg<T extends MessageArgs = {}>(args?: Subset<T, MessageArgs>): CheckSelect<T, Prisma__MessageClient<Message | null >, Prisma__MessageClient<MessageGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -2381,11 +2372,6 @@ export namespace Prisma {
     **/
     select?: RoomSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: RoomInclude | null
-    /**
      * Filter, which Room to fetch.
      * 
     **/
@@ -2413,11 +2399,6 @@ export namespace Prisma {
      * 
     **/
     select?: RoomSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: RoomInclude | null
     /**
      * Filter, which Room to fetch.
      * 
@@ -2482,11 +2463,6 @@ export namespace Prisma {
     **/
     select?: RoomSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: RoomInclude | null
-    /**
      * Filter, which Rooms to fetch.
      * 
     **/
@@ -2533,11 +2509,6 @@ export namespace Prisma {
     **/
     select?: RoomSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: RoomInclude | null
-    /**
      * The data needed to create a Room.
      * 
     **/
@@ -2567,11 +2538,6 @@ export namespace Prisma {
      * 
     **/
     select?: RoomSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: RoomInclude | null
     /**
      * The data needed to update a Room.
      * 
@@ -2612,11 +2578,6 @@ export namespace Prisma {
     **/
     select?: RoomSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: RoomInclude | null
-    /**
      * The filter to search for the Room to update in case it exists.
      * 
     **/
@@ -2643,11 +2604,6 @@ export namespace Prisma {
      * 
     **/
     select?: RoomSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: RoomInclude | null
     /**
      * Filter which Room to delete.
      * 
@@ -2689,11 +2645,6 @@ export namespace Prisma {
      * 
     **/
     select?: RoomSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: RoomInclude | null
   }
 
 
@@ -2894,12 +2845,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     msg?: boolean
-    room?: boolean | RoomArgs
     roomId?: boolean
-  }
-
-  export type MessageInclude = {
-    room?: boolean | RoomArgs
   }
 
   export type MessageGetPayload<
@@ -2911,14 +2857,11 @@ export namespace Prisma {
     ? never
     : S extends MessageArgs | MessageFindManyArgs
     ?'include' extends U
-    ? Message  & {
-    [P in TrueKeys<S['include']>]:
-        P extends 'room' ? RoomGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
-  } 
+    ? Message 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-        P extends 'room' ? RoomGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof Message ? Message[P] : never
+    P extends keyof Message ? Message[P] : never
   } 
     : Message
   : Message
@@ -3293,7 +3236,6 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    room<T extends RoomArgs = {}>(args?: Subset<T, RoomArgs>): CheckSelect<T, Prisma__RoomClient<Room | null >, Prisma__RoomClient<RoomGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -3332,11 +3274,6 @@ export namespace Prisma {
     **/
     select?: MessageSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: MessageInclude | null
-    /**
      * Filter, which Message to fetch.
      * 
     **/
@@ -3364,11 +3301,6 @@ export namespace Prisma {
      * 
     **/
     select?: MessageSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: MessageInclude | null
     /**
      * Filter, which Message to fetch.
      * 
@@ -3433,11 +3365,6 @@ export namespace Prisma {
     **/
     select?: MessageSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: MessageInclude | null
-    /**
      * Filter, which Messages to fetch.
      * 
     **/
@@ -3484,11 +3411,6 @@ export namespace Prisma {
     **/
     select?: MessageSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: MessageInclude | null
-    /**
      * The data needed to create a Message.
      * 
     **/
@@ -3518,11 +3440,6 @@ export namespace Prisma {
      * 
     **/
     select?: MessageSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: MessageInclude | null
     /**
      * The data needed to update a Message.
      * 
@@ -3563,11 +3480,6 @@ export namespace Prisma {
     **/
     select?: MessageSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: MessageInclude | null
-    /**
      * The filter to search for the Message to update in case it exists.
      * 
     **/
@@ -3594,11 +3506,6 @@ export namespace Prisma {
      * 
     **/
     select?: MessageSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: MessageInclude | null
     /**
      * Filter which Message to delete.
      * 
@@ -3640,11 +3547,6 @@ export namespace Prisma {
      * 
     **/
     select?: MessageSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: MessageInclude | null
   }
 
 
@@ -3763,7 +3665,6 @@ export namespace Prisma {
     roomId?: StringFilter | string
     save?: BoolFilter | boolean
     created_at?: DateTimeFilter | Date | string
-    msg?: XOR<MessageRelationFilter, MessageWhereInput> | null
   }
 
   export type RoomOrderByWithRelationInput = {
@@ -3771,12 +3672,10 @@ export namespace Prisma {
     roomId?: SortOrder
     save?: SortOrder
     created_at?: SortOrder
-    msg?: MessageOrderByWithRelationInput
   }
 
   export type RoomWhereUniqueInput = {
     id?: number
-    roomId?: string
   }
 
   export type RoomOrderByWithAggregationInput = {
@@ -3808,7 +3707,6 @@ export namespace Prisma {
     id?: IntFilter | number
     userId?: StringFilter | string
     msg?: StringNullableFilter | string | null
-    room?: XOR<RoomRelationFilter, RoomWhereInput>
     roomId?: StringFilter | string
   }
 
@@ -3816,14 +3714,11 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     msg?: SortOrder
-    room?: RoomOrderByWithRelationInput
     roomId?: SortOrder
   }
 
   export type MessageWhereUniqueInput = {
     id?: number
-    userId?: string
-    roomId?: string
   }
 
   export type MessageOrderByWithAggregationInput = {
@@ -3891,7 +3786,6 @@ export namespace Prisma {
     roomId: string
     save: boolean
     created_at?: Date | string
-    msg?: MessageCreateNestedOneWithoutRoomInput
   }
 
   export type RoomUncheckedCreateInput = {
@@ -3899,14 +3793,12 @@ export namespace Prisma {
     roomId: string
     save: boolean
     created_at?: Date | string
-    msg?: MessageUncheckedCreateNestedOneWithoutRoomInput
   }
 
   export type RoomUpdateInput = {
     roomId?: StringFieldUpdateOperationsInput | string
     save?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    msg?: MessageUpdateOneWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateInput = {
@@ -3914,7 +3806,6 @@ export namespace Prisma {
     roomId?: StringFieldUpdateOperationsInput | string
     save?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    msg?: MessageUncheckedUpdateOneWithoutRoomNestedInput
   }
 
   export type RoomCreateManyInput = {
@@ -3940,7 +3831,7 @@ export namespace Prisma {
   export type MessageCreateInput = {
     userId: string
     msg?: string | null
-    room: RoomCreateNestedOneWithoutMsgInput
+    roomId: string
   }
 
   export type MessageUncheckedCreateInput = {
@@ -3953,7 +3844,7 @@ export namespace Prisma {
   export type MessageUpdateInput = {
     userId?: StringFieldUpdateOperationsInput | string
     msg?: NullableStringFieldUpdateOperationsInput | string | null
-    room?: RoomUpdateOneRequiredWithoutMsgNestedInput
+    roomId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageUncheckedUpdateInput = {
@@ -3973,6 +3864,7 @@ export namespace Prisma {
   export type MessageUpdateManyMutationInput = {
     userId?: StringFieldUpdateOperationsInput | string
     msg?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageUncheckedUpdateManyInput = {
@@ -4084,11 +3976,6 @@ export namespace Prisma {
     not?: NestedDateTimeFilter | Date | string
   }
 
-  export type MessageRelationFilter = {
-    is?: MessageWhereInput | null
-    isNot?: MessageWhereInput | null
-  }
-
   export type RoomCountOrderByAggregateInput = {
     id?: SortOrder
     roomId?: SortOrder
@@ -4155,11 +4042,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter | string | null
   }
 
-  export type RoomRelationFilter = {
-    is?: RoomWhereInput
-    isNot?: RoomWhereInput
-  }
-
   export type MessageCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -4219,18 +4101,6 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type MessageCreateNestedOneWithoutRoomInput = {
-    create?: XOR<MessageCreateWithoutRoomInput, MessageUncheckedCreateWithoutRoomInput>
-    connectOrCreate?: MessageCreateOrConnectWithoutRoomInput
-    connect?: MessageWhereUniqueInput
-  }
-
-  export type MessageUncheckedCreateNestedOneWithoutRoomInput = {
-    create?: XOR<MessageCreateWithoutRoomInput, MessageUncheckedCreateWithoutRoomInput>
-    connectOrCreate?: MessageCreateOrConnectWithoutRoomInput
-    connect?: MessageWhereUniqueInput
-  }
-
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
   }
@@ -4239,42 +4109,8 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type MessageUpdateOneWithoutRoomNestedInput = {
-    create?: XOR<MessageCreateWithoutRoomInput, MessageUncheckedCreateWithoutRoomInput>
-    connectOrCreate?: MessageCreateOrConnectWithoutRoomInput
-    upsert?: MessageUpsertWithoutRoomInput
-    disconnect?: boolean
-    delete?: boolean
-    connect?: MessageWhereUniqueInput
-    update?: XOR<MessageUpdateWithoutRoomInput, MessageUncheckedUpdateWithoutRoomInput>
-  }
-
-  export type MessageUncheckedUpdateOneWithoutRoomNestedInput = {
-    create?: XOR<MessageCreateWithoutRoomInput, MessageUncheckedCreateWithoutRoomInput>
-    connectOrCreate?: MessageCreateOrConnectWithoutRoomInput
-    upsert?: MessageUpsertWithoutRoomInput
-    disconnect?: boolean
-    delete?: boolean
-    connect?: MessageWhereUniqueInput
-    update?: XOR<MessageUpdateWithoutRoomInput, MessageUncheckedUpdateWithoutRoomInput>
-  }
-
-  export type RoomCreateNestedOneWithoutMsgInput = {
-    create?: XOR<RoomCreateWithoutMsgInput, RoomUncheckedCreateWithoutMsgInput>
-    connectOrCreate?: RoomCreateOrConnectWithoutMsgInput
-    connect?: RoomWhereUniqueInput
-  }
-
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
-  }
-
-  export type RoomUpdateOneRequiredWithoutMsgNestedInput = {
-    create?: XOR<RoomCreateWithoutMsgInput, RoomUncheckedCreateWithoutMsgInput>
-    connectOrCreate?: RoomCreateOrConnectWithoutMsgInput
-    upsert?: RoomUpsertWithoutMsgInput
-    connect?: RoomWhereUniqueInput
-    update?: XOR<RoomUpdateWithoutMsgInput, RoomUncheckedUpdateWithoutMsgInput>
   }
 
   export type NestedIntFilter = {
@@ -4424,74 +4260,6 @@ export namespace Prisma {
     gt?: number
     gte?: number
     not?: NestedIntNullableFilter | number | null
-  }
-
-  export type MessageCreateWithoutRoomInput = {
-    userId: string
-    msg?: string | null
-  }
-
-  export type MessageUncheckedCreateWithoutRoomInput = {
-    id?: number
-    userId: string
-    msg?: string | null
-  }
-
-  export type MessageCreateOrConnectWithoutRoomInput = {
-    where: MessageWhereUniqueInput
-    create: XOR<MessageCreateWithoutRoomInput, MessageUncheckedCreateWithoutRoomInput>
-  }
-
-  export type MessageUpsertWithoutRoomInput = {
-    update: XOR<MessageUpdateWithoutRoomInput, MessageUncheckedUpdateWithoutRoomInput>
-    create: XOR<MessageCreateWithoutRoomInput, MessageUncheckedCreateWithoutRoomInput>
-  }
-
-  export type MessageUpdateWithoutRoomInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    msg?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type MessageUncheckedUpdateWithoutRoomInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: StringFieldUpdateOperationsInput | string
-    msg?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type RoomCreateWithoutMsgInput = {
-    roomId: string
-    save: boolean
-    created_at?: Date | string
-  }
-
-  export type RoomUncheckedCreateWithoutMsgInput = {
-    id?: number
-    roomId: string
-    save: boolean
-    created_at?: Date | string
-  }
-
-  export type RoomCreateOrConnectWithoutMsgInput = {
-    where: RoomWhereUniqueInput
-    create: XOR<RoomCreateWithoutMsgInput, RoomUncheckedCreateWithoutMsgInput>
-  }
-
-  export type RoomUpsertWithoutMsgInput = {
-    update: XOR<RoomUpdateWithoutMsgInput, RoomUncheckedUpdateWithoutMsgInput>
-    create: XOR<RoomCreateWithoutMsgInput, RoomUncheckedCreateWithoutMsgInput>
-  }
-
-  export type RoomUpdateWithoutMsgInput = {
-    roomId?: StringFieldUpdateOperationsInput | string
-    save?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RoomUncheckedUpdateWithoutMsgInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    roomId?: StringFieldUpdateOperationsInput | string
-    save?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

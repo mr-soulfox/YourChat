@@ -19,16 +19,14 @@ model Permission {
 
 model Room {
   id         Int      @id @default(autoincrement())
-  roomId     String   @unique
+  roomId     String
   save       Boolean
   created_at DateTime @default(now())
-  msg        Message?
 }
 
 model Message {
   id     Int     @id @default(autoincrement())
-  userId String  @unique
+  userId String
   msg    String?
-  room   Room    @relation(fields: [roomId], references: [roomId])
-  roomId String  @unique
+  roomId String
 }
