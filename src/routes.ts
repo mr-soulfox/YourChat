@@ -53,10 +53,10 @@ router.get('/msg/saved/:roomId', async (req, res) => {
 	const sqlClient = new SqlClient();
 	const result = await sqlClient.message('', '', String(req.params.roomId), 'all');
 	await sqlClient.disconnect();
-	//const msg = decryptMessages(result.info.database.msg);
+	const returnValues = decryptMessages(result.info.database);
 
 	res.status(result.status).json({
-		result: result,
+		result: returnValues,
 	});
 });
 

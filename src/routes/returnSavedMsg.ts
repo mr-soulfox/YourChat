@@ -1,9 +1,20 @@
+import crypto from 'crypto';
+
 interface DecryptedMsg {
-	msg: Array<String>;
+	newDatabase: Array<any>;
 }
 
-export function decryptMessages(msg: String): DecryptedMsg {
+export function decryptMessages(database: Array<any>): DecryptedMsg {
+	const newDatabase: Array<any> = [];
+
+	database.forEach((user) => {
+		newDatabase.push({
+			...user,
+			msg: user.msg.split(';'),
+		});
+	});
+
 	return {
-		msg: msg.split(';'),
+		newDatabase: newDatabase,
 	};
 }
