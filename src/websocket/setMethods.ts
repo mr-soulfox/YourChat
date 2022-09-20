@@ -16,14 +16,16 @@ interface ConnectionDetails {
 
 export function setMethods(socket: WebSocketServer) {
 	socket.on('connection', (ws, req) => {
-		console.log(req.url);
 		const pass = urlVerify(String(req.url));
-
 		if (!pass) {
 			ws.close(3000, "Your url is invalid: 'UserId don't exist on server'");
 
 			return;
 		}
+
+		console.log(
+			`${req.url} - RoomId: ${req.url?.split('/')[1]} | UserId: ${req.url?.split('/')[2]}`
+		);
 
 		new SqlClient().rooms(String(req.url?.split('/')[1]), 'find').then((result) => {
 			if (result.status != 200) {
