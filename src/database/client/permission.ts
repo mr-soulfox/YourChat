@@ -1,4 +1,4 @@
-import {PrismaClient} from '../prisma/client';
+import {PrismaClient} from '../prisma/prismaClient';
 import {PermissionDB} from '../prisma/types';
 import {Return} from './type';
 

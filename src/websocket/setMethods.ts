@@ -5,6 +5,7 @@ import {roomsObj} from './cache/rooms';
 import {msgObj} from './cache/msg';
 import {organizeMsg} from './functions/organizeMsg';
 import {SqlClient} from '../database/client';
+import {urlVerify} from './functions/urlVerify';
 
 interface ConnectionDetails {
 	type: string;
@@ -16,6 +17,13 @@ interface ConnectionDetails {
 export function setMethods(socket: WebSocketServer) {
 	socket.on('connection', (ws, req) => {
 		console.log(req.url);
+		const pass = urlVerify(String(req.url));
+
+		if (!pass) {
+			ws.close(3000, "Your url is invalid: 'UserId don't exist on server'");
+
+			return;
+		}
 
 		new SqlClient().rooms(String(req.url?.split('/')[1]), 'find').then((result) => {
 			if (result.status != 200) {
@@ -38,19 +46,22 @@ export function setMethods(socket: WebSocketServer) {
 				});
 
 				msgObj.msgCache.forEach((room, i) => {
-					const userExist = msgObj.msgCache[i].msg.map((user) => {
+					let userExist;
+					room.msg.forEach((user) => {
 						if (user.user.uuid === String(req.url?.split('/')[2])) {
-							return true;
+							userExist = true;
 						}
 					});
 
-					if (room.name === req.url?.split('/')[1] && userExist.length < 0) {
+					if (room.name !== req.url?.split('/')[1] && !userExist) {
 						msgObj.msgCache[i].msg.push({
 							user: {
 								uuid: String(req.url?.split('/')[2]),
 								allMsg: '',
 							},
 						});
+
+						console.log(msgObj.msgCache);
 					}
 				});
 

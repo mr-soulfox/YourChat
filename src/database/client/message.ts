@@ -1,4 +1,4 @@
-import {PrismaClient} from '../prisma/client';
+import {PrismaClient} from '../prisma/prismaClient';
 import {MessagesDB} from '../prisma/types';
 import {Return} from './type';
 

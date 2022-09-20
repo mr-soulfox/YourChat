@@ -1,5 +1,5 @@
 import express from 'express';
-import {PrismaClient} from './database/prisma/client';
+import {PrismaClient} from './database/prisma/prismaClient';
 import {router} from './routes';
 import {WebSocket} from './websocket';
 import cors from 'cors';

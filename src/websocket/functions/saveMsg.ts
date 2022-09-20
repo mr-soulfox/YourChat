@@ -19,7 +19,6 @@ export async function saveMsg(
 
 	msg.msgCache.forEach((room: any, i) => {
 		const roomId = room.name;
-		console.log(msg.msgCache[i].msg);
 
 		msg.msgCache[i].msg.forEach(async (user: Msg) => {
 			await sqlClient.message(user.user.allMsg, user.user.uuid, roomId, 'update');
