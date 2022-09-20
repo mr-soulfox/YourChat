@@ -17,3 +17,4 @@ node_modules
 test.ts
 teste.html
 .env
+./src/database/prisma/client/*
