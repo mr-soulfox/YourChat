@@ -1,5 +1,5 @@
 import {prismaClient} from '../../index';
-import {prisma, PrismaClient} from '../prisma/prismaClient';
+import {PrismaClient} from '../prisma/prismaClient';
 import {log} from './function/log';
 import {messageDBInteraction} from './message';
 import {permissionDBInteraction} from './permission';

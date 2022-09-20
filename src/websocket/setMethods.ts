@@ -1,11 +1,11 @@
 import {WebSocketServer} from 'ws';
 import {oAuthConnection} from './functions/oAuthConnection';
 import {saveMsg} from './functions/saveMsg';
-import {roomsObj} from './cache/rooms';
-import {msgObj} from './cache/msg';
 import {organizeMsg} from './functions/organizeMsg';
 import {SqlClient} from '../database/client';
 import {urlVerify} from './functions/urlVerify';
+import {roomsCache} from './cache/connections/server/rooms';
+import {msgCache} from './cache/connections/client/msg';
 
 interface ConnectionDetails {
 	type: string;
@@ -39,34 +39,20 @@ export function setMethods(socket: WebSocketServer) {
 			}
 
 			if (result.status == 200) {
-				roomsObj.roomsMethods.forEach((room, i) => {
-					if (room.name === req.url?.split('/')[1]) {
-						roomsObj.roomsMethods[i].clients.push(ws);
-					}
-				});
+				roomsCache.allConnections[
+					String(req.url?.split('/')[1]) as keyof typeof roomsCache
+				].clients.push(ws);
 
-				msgObj.msgCache.forEach((room, i) => {
-					let userExist;
-					room.msg.forEach((user) => {
-						if (user.user.uuid === String(req.url?.split('/')[2])) {
-							userExist = true;
-						}
-					});
+				const params = {
+					message: '',
+					userId: String(req.url?.split('/')[1]),
+					roomId: String(req.url?.split('/')[2]),
+				};
 
-					if (room.name !== req.url?.split('/')[1] && !userExist) {
-						msgObj.msgCache[i].msg.push({
-							user: {
-								uuid: String(req.url?.split('/')[2]),
-								allMsg: '',
-							},
-						});
-
-						console.log(msgObj.msgCache);
-					}
-				});
+				msgCache.insertMsg(params);
 
 				saveMsg(
-					msgObj,
+					msgCache,
 					'create',
 					String(req.url?.split('/')[2]),
 					String(req.url?.split('/')[1])
@@ -76,45 +62,50 @@ export function setMethods(socket: WebSocketServer) {
 
 		ws.on('message', (body) => {
 			const connectionDetails: ConnectionDetails = JSON.parse(body.toString());
+			const msgSended: string = connectionDetails.body;
 			const oAuth = connectionDetails.token;
 			oAuthConnection(oAuth, ws);
 
 			if (connectionDetails.type === 'text') {
-				if (connectionDetails.body === '') {
+				if (msgSended === '') {
 					return;
 				}
 
-				roomsObj.roomsMethods.forEach((room, i) => {
-					if (room.name === connectionDetails.path) {
-						roomsObj.roomsMethods[i].clients.forEach((c) => {
-							if (c != ws) {
-								c.send(
-									JSON.stringify({
-										text: connectionDetails.body,
-									})
-								);
-							}
-						});
+				const connections =
+					roomsCache.allConnections[
+						String(req.url?.split('/')[1]) as keyof typeof roomsCache
+					].clients;
+
+				connections.forEach((client) => {
+					if (client != ws) {
+						client.send(
+							JSON.stringify({
+								text: msgSended.trim(),
+							})
+						);
 					}
 				});
 
-				msgObj.msgCache.forEach((msg, ui) => {
-					if (msg.name === connectionDetails.path) {
-						msgObj.msgCache[ui].msg.forEach((user, li) => {
-							if (user.user.uuid === String(req.url?.split('/')[2])) {
-								msgObj.msgCache[ui].msg[li].user.allMsg = organizeMsg(
-									String(connectionDetails.body),
-									user.user.allMsg
-								);
-							}
-						});
-					}
-				});
+				const params = {
+					userId: String(req.url?.split('/')[2]),
+					roomId: String(req.url?.split('/')[1]),
+				};
+
+				if (msgCache.cache[params.userId][params.roomId]) {
+					msgCache.cache[params.userId].msg = organizeMsg(
+						String(msgSended.trim()),
+						msgCache.cache[params.userId].msg
+					);
+
+					console.log(msgCache);
+				}
 			}
 		});
 
 		ws.on('close', (code, reason) => {
-			saveMsg(msgObj, 'update');
+			if (roomsCache.allConnections[String(req.url?.split('/')[1])].save) {
+				saveMsg(msgCache, 'update');
+			}
 
 			try {
 				ws.emit(

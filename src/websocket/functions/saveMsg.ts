@@ -1,9 +1,8 @@
 import {SqlClient} from '../../database/client';
-import {MsgObj} from '../cache/msg';
-import {Msg} from '../cache/msg';
+import {MsgCache} from '../cache/connections/client/msg-type';
 
 export async function saveMsg(
-	msg: MsgObj,
+	msg: MsgCache,
 	type: string,
 	userId: string = '',
 	roomId: string = ''
@@ -12,18 +11,16 @@ export async function saveMsg(
 
 	if (type == 'create') {
 		await sqlClient.message('', userId, roomId, 'create');
-		await sqlClient.disconnect();
-
-		return;
 	}
 
-	msg.msgCache.forEach((room: any, i) => {
-		const roomId = room.name;
+	if (type == 'update') {
+		const userId = Object.keys(msg.cache);
 
-		msg.msgCache[i].msg.forEach(async (user: Msg) => {
-			await sqlClient.message(user.user.allMsg, user.user.uuid, roomId, 'update');
+		userId.forEach(async (user, i) => {
+			const roomId = Object.keys(msg.cache[user]);
+			await sqlClient.message(msg.cache[user].msg, user, roomId[0], 'update');
 		});
-	});
+	}
 
 	await sqlClient.disconnect();
 }

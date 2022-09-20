@@ -4,8 +4,7 @@ import {router} from './routes';
 import {WebSocket} from './websocket';
 import cors from 'cors';
 import helmet from 'helmet';
-import {initializeRoomsInDatabase} from './websocket/cache/rooms/initialize';
-import {initializeMsgInDatabase} from './websocket/cache/msg/initialize';
+import {InitializeCache} from './websocket/cache/connections/initialize';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,8 +15,10 @@ app.use(helmet());
 app.use(router);
 
 const serverHttp = app.listen(port, () => {
-	initializeRoomsInDatabase();
-	initializeMsgInDatabase();
+	const initialize = new InitializeCache();
+	initialize.initRoomsCache();
+	initialize.initMsgCache();
+
 	console.log('Server is running on PORT', port);
 });
 

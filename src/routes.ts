@@ -2,10 +2,11 @@ import {Router} from 'express';
 import {generateSessionKey} from './jwt';
 import {createUUID} from './routes/createUUID';
 import {oAuth} from './routes/middlewares/oAuth';
-import {roomsObj} from './websocket/cache/rooms';
 import {SqlClient} from './database/client';
 import {createApiKey} from './routes/createApiKey';
 import randomstring from 'randomstring';
+import {roomsCache} from './websocket/cache/connections/server/rooms';
+import {Rooms} from './websocket/cache/connections/server/rooms-type';
 import {decryptMessages} from './routes/returnSavedMsg';
 
 export const router = Router();
@@ -90,10 +91,13 @@ router.post('/create-room', async (req, res) => {
 	const result = await sqlClient.rooms(uuid, 'create', req.body.save);
 	await sqlClient.disconnect();
 
-	roomsObj.roomsMethods.push({
+	const params: Rooms = {
 		name: uuid,
+		save: req.body.save,
 		clients: [],
-	});
+	};
+
+	roomsCache.insertRoom(params);
 
 	res.status(result.status).json(result);
 });
